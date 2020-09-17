@@ -1,0 +1,165 @@
+@font-face {
+    font-family: 粉圓體;
+    src: url(./jf-openhuninn-1.1.ttf)
+}
+
+* {
+    font-family: '粉圓體';
+    user-select: none;
+}
+
+/* html {
+    text-align: center;
+} */
+.title,
+.calendar {
+    text-align: center;
+}
+h1 {
+    color: #EBEBEB;
+}
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    transition: 0.5s;
+    background-color:  #093157;
+    color:#EBEBEB;
+    cursor: pointer;
+    outline:none;
+}
+button:hover{
+    background-color: #EBEBEB;
+    color: #093157;
+    transition: 0.5s;
+}
+h2{
+    border-bottom: 2px solid #093157;
+}
+.title {
+    background-color: #093157;
+    padding: 20px;
+}
+.weekday,
+.week {
+    display: flex;
+    border-bottom: 1px solid #6B8EB3;
+}
+
+.weekday {
+    background-color: #274F75;
+    height: 40px;
+}
+
+.week {
+    border-right: 1px solid #6B8EB3;
+}
+
+.weekday>div {
+    flex: 110%;
+    line-height: 40px;
+    color: #EBEBEB;
+}
+
+.week>div {
+    position: relative;
+    flex: 100%;
+    height: 90px;
+    line-height: 30px;
+    border-left: 1px solid #6B8EB3;
+}
+
+.week>.today:before {
+    color: #EBEBEB;
+}
+
+.today {
+    background-color: #274F75;
+}
+
+.week>.other:before {
+    color: #EBEBEB !important;
+}
+
+.week>div:before {
+    position: absolute;
+    /* background-color: #EBEBEB; */
+    content: attr(data-date);
+    font-size: 36px;
+    color: #274F75;
+    display: block;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 100%;
+}
+
+.day>div {
+    font-size: 16px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-top-right-radius: 30px;
+    background-color: #B52D12;
+    color: #EBEBEB;
+}
+
+.done {
+    text-decoration: line-through;
+}
+
+.todosStyle {
+    border: 1px solid #093157;
+    width: 400px;
+    padding: 20px;
+    position: relative;
+    top: 20px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+.uil-trash-alt {
+    color: #B52D12;
+}
+
+.uil-edit-alt,
+.uil-trash-alt {
+    font-size: 20px;
+}
+
+.uil-edit-alt:hover,
+.uil-trash-alt:hover,
+.uil-angle-left-b:hover,
+.uil-angle-right-b:hover,
+.changeYear:hover {
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.uil-edit-alt,
+.uil-trash-alt,
+.uil-angle-left-b,
+.uil-angle-right-b,
+.changeYear {
+    opacity: 0.6;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.week>.weekend:before{
+    color: #B52D12;
+}
+.changeYear{
+    color: #EBEBEB;
+}
