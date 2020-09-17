@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>梗圖產生器</title>
+
+    <style>
+        body {
+            font-family: "jf open 粉圓 1.1";
+            background-color: #F0F0F0;
+        }
+
+        img {
+            width: 337px;
+            height: 184px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+        }
+
+        h3 {
+            color: #313F7B;
+        }
+
+        input[type="radio"][id^="check"] {
+            display: none;
+        }
+
+        input[type="text"] {
+            border: 1px solid #313F7B;
+            border-radius: 5px;
+            padding: 6px;
+        }
+
+        label {
+            /* border: 1px solid #fff; */
+            /* padding: 10px; */
+            display: block;
+            position: relative;
+            /* margin: 10px; */
+            cursor: pointer;
+        }
+
+        label:before {
+            background-color: white;
+            color: white;
+            content: " ";
+            display: block;
+            border-radius: 50%;
+            border: 1px solid #313F7B;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            line-height: 28px;
+            transition-duration: 0.4s;
+            transform: scale(0);
+        }
+
+
+        :checked+label {
+            border-color: #ddd;
+        }
+
+        :checked+label:before {
+            content: "✓";
+            background-color: #313F7B;
+            transform: scale(1);
+            z-index: 1;
+        }
+
+        :checked+label img {
+            /* transform: scale(0.9); */
+            /* box-shadow: 0 0 5px #333; */
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br><br>
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col ">
+                <h3>選擇一張圖片</h3>
+                <br>
+
+
+                <ul id="selectArea">
+                    <li>
+                        <input type="radio" id="check01" name="checkImg">
+                        <label for="check01"><img id="Img01" src="01.jpeg"></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="check02" name="checkImg">
+                        <label for="check02"><img id="Img02" src="02.jpeg"></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="check03" name="checkImg">
+                        <label for="check03"><img id="Img03" src="03.jpg"></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="check04" name="checkImg">
+                        <label for="check04"><img id="Img04" src="04.jpeg"></label>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="col">
+
+
+                <h3>輸入一段文字</h3>
+                <input type="text" id="myText" placeholder="你的良心不會痛嗎">
+                <input class="btn btn-dark" type='button' name='submit' value='送出' onclick='getText();' />
+                <br>
+                <br>
+                <h3>預覽完成圖片</h3>
+
+                <canvas id="canvasImg" width="570px" height="324px" style="border: 3px solid #313F7B;"></canvas>
+                <div>
+                    <a class="btn btn-dark" id="aDownload" href="#" download="download.png">下載圖片</a>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <!-- <img id="Img" src="01.jpeg"> -->
+
+
+        <img id="imgView" width="570px" height="324px" style="border:1px solid #000000; display: none;" />
+
+    </div>
+
+
+    <script>
+
+        //輸出在畫布上
+        var c = document.getElementById("canvasImg");
+        var ctx = c.getContext("2d");
+
+
+        // <ul id="selectArea">監聽被點擊的時候，執行function getImgId
+        var selectId = document.getElementById("selectArea");
+        selectId.addEventListener("click", getImgId);
+
+
+        var myImg;
+        var text = "";
+        //取得name == "checkImg"的物件，取得裡面img屬性並放在畫布上
+        function getImgId(e) {
+            if (e.target.name == "checkImg") {
+                myImg = e.target.nextElementSibling.querySelector('img');
+                // console.log(myImg);
+                ctx.drawImage(myImg, 0, 0, 570, 324);            
+            };
+            ctx.fillText(text, 285, 324);
+            imgView.src = canvasImg.toDataURL("image/png");
+
+            aDownload.href = canvasImg.toDataURL("image/png");
+            
+        };
+
+        
+
+        // window.onload = getText;
+        function getText() {
+            
+            //抓取送出的文字
+            text = document.getElementById("myText").value;
+            
+            //文字設定
+            
+            ctx.fillStyle = "#FFFFFF";
+            ctx.font = "40px 微軟正黑體";
+            ctx.textBaseline = "bottom";
+            ctx.textAlign = "center";
+            ctx.drawImage(myImg, 0, 0, 570, 324);
+            ctx.fillText(text, 285, 324);
+            console.log(myImg);
+            
+
+
+            // console.log(canvasImg.toDataURL("image/png"));
+            //data:image/png;base64,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
+            imgView.src = canvasImg.toDataURL("image/png");
+
+            aDownload.href = canvasImg.toDataURL("image/png");
+        };
+
+
+
+    </script>
+
+</body>
+
+</html>
