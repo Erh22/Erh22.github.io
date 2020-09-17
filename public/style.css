@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 粉圓體;
+    src: url(./jf-openhuninn-1.1.ttf)
+}
+* {
+    font-family: '粉圓體';
+    user-select: none;
+}
+html{
+    text-align: center;
+    background-color: #4D5561;
+}
+span{
+    font-size: 20px;
+}
