@@ -6,69 +6,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
     <link rel="stylesheet" href="./style.css">
+    <script src="../public/loading.js"></script>
     <title>行事曆</title>
 </head>
 
 <body>
-    <div id="myCalendar">
-        <div class="title">
-            <h1>
-                <i class="uil uil-angle-left-b" @click="changeMonth(-1)"></i>
-                &nbsp;&nbsp;{{ calendar.year }}年{{ calendar.month + 1 }}月&nbsp;&nbsp;
-                <i class="uil uil-angle-right-b" @click="changeMonth(1)"></i>
-            </h1>
-            <button @click="setToday()">回到今年<i class="uil uil-redo"></i></button>
-            <div class="changeYear" @click="changeYear(-1)" style="float: left;"><i class="uil uil-angle-double-left"></i>上一年</div>
-            <div class="changeYear" @click="changeYear(1)" style="float: right;">下一年<i class="uil uil-angle-double-right"></i></div>
-        </div>
-        <div class="calendar">
-            <div class="weekday">
-                <div>日</div>
-                <div>一</div>
-                <div>二</div>
-                <div>三</div>
-                <div>四</div>
-                <div>五</div>
-                <div>六</div>
+    <div class="load">
+        <div id="myCalendar">
+            <div class="title">
+                <h1>
+                    <i class="uil uil-angle-left-b" @click="changeMonth(-1)"></i>
+                    &nbsp;&nbsp;{{ calendar.year }}年{{ calendar.month + 1 }}月&nbsp;&nbsp;
+                    <i class="uil uil-angle-right-b" @click="changeMonth(1)"></i>
+                </h1>
+                <button @click="setToday()">回到今年<i class="uil uil-redo"></i></button>
+                <div class="changeYear" @click="changeYear(-1)" style="float: left;"><i
+                        class="uil uil-angle-double-left"></i>上一年</div>
+                <div class="changeYear" @click="changeYear(1)" style="float: right;">下一年<i
+                        class="uil uil-angle-double-right"></i></div>
             </div>
-            <div class="week" v-for="week in 6">
-                <!-- 行列轉換個數 -->
-                <!-- :data-date 取得每一格的日期(陣列裡的第N筆資料)，因為 v-for 裡若是帶數字是從1開始算，所以要先-1 -->
-                <!-- 7是一排的個數(7天) -->
-                <div class="day" v-for="day in 7" :data-date="calendarMonth[(week-1)*7 + (day-1)].date" :class="{
+            <div class="calendar">
+                <div class="weekday">
+                    <div>日</div>
+                    <div>一</div>
+                    <div>二</div>
+                    <div>三</div>
+                    <div>四</div>
+                    <div>五</div>
+                    <div>六</div>
+                </div>
+                <div class="week" v-for="week in 6">
+                    <!-- 行列轉換個數 -->
+                    <!-- :data-date 取得每一格的日期(陣列裡的第N筆資料)，因為 v-for 裡若是帶數字是從1開始算，所以要先-1 -->
+                    <!-- 7是一排的個數(7天) -->
+                    <div class="day" v-for="day in 7" :data-date="calendarMonth[(week-1)*7 + (day-1)].date" :class="{
                         today:calendarMonth[(week-1)*7 + (day-1)].year === today.year && calendarMonth[(week-1)*7 + (day-1)].month === today.month && calendarMonth[(week-1)*7 + (day-1)].date === today.date,
                         other:calendarMonth[(week-1)*7 + (day-1)].month !== calendar.month,
                         weekend:calendarMonth[(week-1)*7 + (day-1)].day == 6 || calendarMonth[(week-1)*7 + (day-1)].day == 0
                             }" @dblclick="addTodo(calendarMonth[(week-1)*7 + (day-1)])">
-                    <div v-if="calendarMonth[(week-1)*7 + (day-1)].count">
-                        {{ calendarMonth[(week-1)*7 + (day-1)].count }}</div>
+                        <div v-if="calendarMonth[(week-1)*7 + (day-1)].count">
+                            {{ calendarMonth[(week-1)*7 + (day-1)].count }}</div>
+                    </div>
+
                 </div>
-
             </div>
-        </div>
-        <div class="todosStyle">
-            <h2>{{ calendar.year }}年{{ calendar.month + 1 }}月待辦事項</h2>
-            <div class="todos">
-                <span v-if="currentMonth == ''" style="color: #A7B1CB;">暫無待辦事項(雙擊任意日期新增)</span>
-                <div v-for="item in currentMonth">
-                    <h3>{{ item.month + 1 }}/{{ item.date }}</h3>
-                    <ul v-for="(todo,index) in item.todo">
-                        <li>
-                            <input type="checkbox" v-model="todo.done" :id="index">
-                            <label :for="index" :class="{ done:todo.done }">{{ todo.content }}</label>
-                            <i class="uil uil-edit-alt" @click="editTodo(todo)"></i><i class="uil uil-trash-alt"
-                                @click="deleteTodo(item,index)"></i>
-                        </li>
-                    </ul>
+            <div class="todosStyle">
+                <h2>{{ calendar.year }}年{{ calendar.month + 1 }}月待辦事項</h2>
+                <div class="todos">
+                    <span v-if="currentMonth == ''" style="color: #A7B1CB;">暫無待辦事項(雙擊任意日期新增)</span>
+                    <div v-for="item in currentMonth">
+                        <h3>{{ item.month + 1 }}/{{ item.date }}</h3>
+                        <ul v-for="(todo,index) in item.todo">
+                            <li>
+                                <input type="checkbox" v-model="todo.done" :id="index">
+                                <label :for="index" :class="{ done:todo.done }">{{ todo.content }}</label>
+                                <i class="uil uil-edit-alt" @click="editTodo(todo)"></i><i class="uil uil-trash-alt"
+                                    @click="deleteTodo(item,index)"></i>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
-
             </div>
-        </div>
-        <div class="copyright">
-            <span class="copyrightContent">&copy; 1994-{{today.year}} h2&apos;s</span>
-        </div>
+            <div class="copyright">
+                <span class="copyrightContent">&copy; 1994-{{today.year}} h2&apos;s</span>
+            </div>
 
+        </div>
     </div>
+
+    <div id="loading"></div>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js'></script>
     <script>
         new Vue({
