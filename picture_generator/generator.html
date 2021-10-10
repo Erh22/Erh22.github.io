@@ -12,6 +12,7 @@
         body {
             font-family: "jf open 粉圓 1.1";
             background-color: #F0F0F0;
+            color: #313F7B;
         }
 
         img {
@@ -74,7 +75,7 @@
             border-color: #ddd;
         }
 
-        :checked+label:before {
+        #selectArea :checked+label:before {
             content: "✓";
             background-color: #313F7B;
             transform: scale(1);
@@ -126,6 +127,16 @@
                 <h3>輸入一段文字</h3>
                 <input type="text" id="myText" placeholder="你的良心不會痛嗎">
                 <input class="btn btn-dark" type='button' name='submit' value='送出' onclick='getText();' />
+                <ul id="selectTextStyle">
+                    <li>
+                        <input type="radio" id="fill" name="textStyle">
+                        <label for="fill">填滿</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="stroke" name="textStyle">
+                        <label for="stroke">外框</label>
+                    </li>
+                </ul>
                 <br>
                 <br>
                 <h3>預覽完成圖片</h3>
@@ -158,6 +169,16 @@
         var selectId = document.getElementById("selectArea");
         selectId.addEventListener("click", getImgId);
 
+        var textSelect = document.getElementById("selectTextStyle");
+        textSelect.addEventListener("click", handleText);
+
+        var textStyle;
+        function handleText(e) {
+            if (e.target.name == "textStyle") {
+                textStyle = e.target.id
+                console.log('textStyle', textStyle)
+            }
+        }
 
         var myImg;
         var text = "";
@@ -165,35 +186,52 @@
         function getImgId(e) {
             if (e.target.name == "checkImg") {
                 myImg = e.target.nextElementSibling.querySelector('img');
-                // console.log(myImg);
-                ctx.drawImage(myImg, 0, 0, 570, 324);            
+                console.log(myImg);
+                ctx.drawImage(myImg, 0, 0, 570, 324);
             };
-            ctx.fillText(text, 285, 324);
+            if(textStyle == "fill"){
+                ctx.fillText(text, 285, 324);
+            }else if(textStyle == "stroke"){
+                ctx.strokeText(text, 285, 324);
+            }
+            
             imgView.src = canvasImg.toDataURL("image/png");
 
             aDownload.href = canvasImg.toDataURL("image/png");
-            
+
         };
 
-        
+
 
         // window.onload = getText;
         function getText() {
-            
+
             //抓取送出的文字
             text = document.getElementById("myText").value;
-            
-            //文字設定
-            
-            ctx.fillStyle = "#FFFFFF";
-            ctx.font = "40px 微軟正黑體";
-            ctx.textBaseline = "bottom";
-            ctx.textAlign = "center";
-            ctx.drawImage(myImg, 0, 0, 570, 324);
-            ctx.fillText(text, 285, 324);
-            console.log(myImg);
-            
 
+            //文字設定
+            if (textStyle == "fill") {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "40px 微軟正黑體";
+                ctx.textBaseline = "bottom";
+                ctx.textAlign = "center";
+                ctx.drawImage(myImg, 0, 0, 570, 324);
+                ctx.fillText(text, 285, 324);
+            }else if(textStyle == "stroke"){
+                ctx.strokeStyle = "#FFFFFF";
+                ctx.font = "40px 微軟正黑體";
+                ctx.textBaseline = "bottom";
+                ctx.textAlign = "center";
+                ctx.drawImage(myImg, 0, 0, 570, 324);
+                ctx.strokeText(text, 285, 324);
+            }else{
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "40px 微軟正黑體";
+                ctx.textBaseline = "bottom";
+                ctx.textAlign = "center";
+                ctx.drawImage(myImg, 0, 0, 570, 324);
+                ctx.fillText(text, 285, 324);
+            }
 
             // console.log(canvasImg.toDataURL("image/png"));
             //data:image/png;base64,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
